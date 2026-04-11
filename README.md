@@ -1,86 +1,47 @@
-# 🚀 AI Skills 仓库
+# AI Skills
 
-## 欢迎来到我的 **AI Skills** 实验室！🧪
+这个仓库是我本地维护的 agent skill 工作区，用来放可复用的 `SKILL.md`、参考资料和辅助脚本。
 
-## 🛠 技能矩阵 (Skills Matrix)
+## 当前可用技能
 
-目前仓库中包含以下技能：
+| 技能 | 状态 | 说明 |
+| :--- | :--- | :--- |
+| [**sbti-cli**](./sbti-cli/) | ✅ 可用 | 帮 agent 理解并使用 npm 包 `@pancato/sbti-cli`，包括离线查询、JSON 评分、批量处理和启发式推断。 |
 
-| 技能名称                 | 状态      | 核心功能简介                             |
-| :----------------------- | :-------- | :--------------------------------------- |
-| [**Redmine**](./redmine) | 🏗 开发中 | 项目追踪、Issue 管理、工时记录、附件处理 |
-| **More Coming Soon...**  | ⏳ 规划中 | 更多实用的集成正在路上                   |
+只把真正包含 `SKILL.md` 的目录视为可用技能。像 `redmine/` 这类空目录目前只是占位，不应该写进技能清单。
 
----
+## 仓库结构
 
-## 🧩 技能详情
-
-### 🔴 Redmine Skill
-
-让你的 AI 助手变成项目管理大师！
-
-- **查询任务**：通过 ID、项目或指派人快速获取 issue 详情。
-- **管理 Issue**：创建、更新、删除或批量修改任务。
-- **工时审计**：记录和查询项目耗时。
-- **附件管理**：自动下载/上传任务附件。
-
----
-
-## 📦 快速开始与安装指南
-
-### 1. 环境准备
-
-确保你的系统中安装了以下软件：
-
-- **Node.js** (v18.0.0+)
-- **npm** 或 **pnpm**
-- **Git**
-
-### 2. 获取技能
-
-```bash
-git clone https://github.com/your-username/ai-skills.git
-cd ai-skills
+```text
+skills/
+  README.md
+  sbti-cli/
+    SKILL.md
+    references/
+    scripts/
+  redmine/   # 占位目录，当前还不是可用 skill
 ```
 
-### 3. 主流 MCP 客户端配置
+## 约定
 
-目前主流的 MCP 客户端（如 Claude Desktop）通常通过编辑配置文件来启用技能。
+- 每个技能目录至少包含一个 `SKILL.md`。
+- `references/` 用来放按需加载的说明文档、命令清单、数据结构说明。
+- `scripts/` 用来放确定性、可复用的辅助脚本。
+- 新增或删除技能时，记得同步更新这份 `README.md`，避免出现目录和文档不一致的问题。
 
-#### 🖥 Claude Desktop 配置
+## 当前重点
 
-在 macOS 上，编辑以下文件：
-`~/Library/Application Support/Claude/claude_desktop_config.json`
+### `sbti-cli`
 
-添加如下配置：
+这个 skill 面向 npm 包 `@pancato/sbti-cli`，重点帮助 agent：
 
-```json
-{
-  "mcpServers": {
-    "redmine": {
-      "command": "npx",
-      "args": ["-y", "@path/to/your/redmine/skill"],
-      "env": {
-        "REDMINE_URL": "https://your-redmine.com",
-        "REDMINE_API_KEY": "your_api_key_here"
-      }
-    },
-    "agent-browser": {
-      "command": "npx",
-      "args": ["-y", "agent-browser", "serve"]
-    }
-  }
-}
-```
+- 区分“给人用”的交互命令和“给 agent 用”的 JSON 命令
+- 优先使用 `sbti` 或 `npx -y @pancato/sbti-cli`
+- 正确构造 `score` / `batch` 输入
+- 在使用 `analyze-prompt` 时保留“启发式推断”的边界
+- 只在用户明确要求时才运行依赖网络的 `update`
 
-## 🤝 参与贡献
+## 维护提示
 
-如果你有新的 Idea 或者发现了 Bug，欢迎提交 **Pull Request** 或开启 **Issue**。让我们一起构建更强大的 AI 技能库！🌟
-
-## 📜 许可证
-
-[MIT License](./LICENSE)
-
----
-
-> 💡 **小贴士**：在使用 Redmine 技能前，请确保你已经生成了 API 访问令牌（在个人账号配置页面可以找到）。
+- 如果某个 skill 依赖外部项目，最好在 skill 内写明本地路径或默认执行方式。
+- 如果 README 里出现不存在的文件、错误的安装方式或把 skill 当成 MCP server 的描述，应该优先修正。
