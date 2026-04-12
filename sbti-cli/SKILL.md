@@ -34,14 +34,6 @@ If the package is not installed yet, prefer one-off execution via npm:
 npx -y @pancato/sbti-cli <command> ...
 ```
 
-Do not default to a repo-local path when ordinary package usage is enough.
-
-Only use the source repository for maintenance, debugging, or behavior verification. If the local source repo exists, it may be at:
-
-`/Users/caibaba/Documents/2026/sbti-cli`
-
-The package targets Node.js `>=20.19.0`.
-
 ## Language Policy / 语言策略
 
 - If the user is writing in Chinese, answer in Chinese first and keep command examples valid.
@@ -73,7 +65,7 @@ Load [references/commands.md](./references/commands.md) when you need exact comm
 
 Load [references/json-contracts.md](./references/json-contracts.md) when you need bilingual input/output shapes for automation.
 
-Use [scripts/make-answer-payload.mjs](./scripts/make-answer-payload.mjs) when you need to scaffold a deterministic `score` or `batch` payload quickly.
+Use [scripts/make-answer-payload.mjs](./scripts/make-answer-payload.mjs) when you need to scaffold a deterministic `score` or `batch` payload quickly and a local skill checkout or source repo is available.
 
 ## Guardrails / 注意事项
 

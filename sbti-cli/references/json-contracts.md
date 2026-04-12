@@ -159,12 +159,22 @@ Always preserve the distinction / 始终保留这个边界:
 
 If you only need a quick payload scaffold / 如果你只想快速生成一个输入样板:
 
+> **Note / 注**: This helper script is repo-local and is only available when you have the skill checkout or source repo. It is not part of the published `sbti` / `@pancato/sbti-cli` package. / 这个辅助脚本是仓库内脚本，只有在你手头有本 skill 目录或源码仓库时才能直接调用；它不属于已发布的 `sbti` / `@pancato/sbti-cli` 包。
+
+From the `sbti-cli/` directory / 在 `sbti-cli/` 目录下运行:
+
 ```bash
-node /Users/caibaba/Documents/ai/skills/sbti-cli/scripts/make-answer-payload.mjs --fill 1
+node ./scripts/make-answer-payload.mjs --fill 1
 ```
 
 For a batch scaffold / 批量样板:
 
 ```bash
-node /Users/caibaba/Documents/ai/skills/sbti-cli/scripts/make-answer-payload.mjs --mode batch --fill 1 --id demo
+node ./scripts/make-answer-payload.mjs --mode batch --fill 1 --id demo
+```
+
+If you are standing in the repo root instead / 如果你当前在仓库根目录:
+
+```bash
+node ./sbti-cli/scripts/make-answer-payload.mjs --fill 1
 ```

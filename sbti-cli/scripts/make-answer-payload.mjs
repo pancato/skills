@@ -2,12 +2,12 @@
 
 function printHelp() {
   console.log(`Usage:
-  node make-answer-payload.mjs [--mode single|batch] [--fill 1|2|3] [--id case-1] [--drink-gate-q2 2]
+  node ./scripts/make-answer-payload.mjs [--mode single|batch] [--fill 1|2|3] [--id case-1] [--drink-gate-q2 2]
 
 Examples:
-  node make-answer-payload.mjs --fill 1
-  node make-answer-payload.mjs --mode batch --fill 3 --id sample
-  node make-answer-payload.mjs --fill 3 --drink-gate-q2 2`);
+  node ./scripts/make-answer-payload.mjs --fill 1
+  node ./scripts/make-answer-payload.mjs --mode batch --fill 3 --id sample
+  node ./scripts/make-answer-payload.mjs --fill 3 --drink-gate-q2 2`);
 }
 
 function readOption(argv, name, fallback) {
