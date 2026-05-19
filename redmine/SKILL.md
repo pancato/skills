@@ -46,6 +46,8 @@ English: Use this skill to operate Redmine through the Redmine MCP.
 - 如果对方实例把“任务类型”“公司”“成本中心”等做成自定义字段，再通过 `custom_fields` 写入
 - “实际工时”优先写 `time_entry.hours`，不是 issue 字段
 - 如果任务是父子结构，父任务默认视为结构节点；父任务不要填写 `estimated_hours`，也不要登记 `time_entry`
+- 补登任务时，叶子任务粒度要细：单个叶子任务的预计工时和实际工时默认控制在 `1` 到 `4` 小时；除非用户明确要求，不要创建单个 `> 4` 小时的叶子任务
+- 可以创建跨度较大的父任务用于归类，但父任务只做结构汇总；父任务下面要拆多个叶子子任务，由叶子子任务登记预计工时和实际工时
 
 ## Basic Operations
 
@@ -76,6 +78,9 @@ English: Use this skill to operate Redmine through the Redmine MCP.
 - 如果实例里要求填写“公司 / 实际公司 / 成本中心”等字段，要先查它属于 issue 还是 time entry，然后在对应步骤写入 `custom_fields`
 - 即使 Redmine API 理论上允许创建时直接带 `status_id`，这里也不要把“建任务 + 已完成 + 工时登记”压成一步；按业务规则必须拆成两步 issue，再单独登记 time entry
 - 如果一个 issue 已经有子任务，或者本次要先创建父任务再拆子任务，那么父任务本身不要写预计工时，也不要写实际工时；只给叶子子任务填写工时，避免 Redmine 汇总后重复累计
+- 补登一整天或多天工时时，不要把一天 `6` 到 `8` 小时全部塞进一个 issue。应该按 git 记录、工作主题或自然工作块拆成多个叶子子任务，每个叶子子任务通常 `1` 到 `4` 小时；同一天可以登记多个 time entry
+- 如果已经错误地把大跨度工时登记到了父任务或粗粒度任务上，修正时要先读取现有 issue/time entry，再把粗粒度 issue 改为结构父任务（清空 `estimated_hours`，不要保留直接 time entry），然后新建细粒度叶子子任务并把工时迁移到叶子子任务
+- 如果需要给已经关闭的 issue 补建子任务，先读取父 issue 的 `allowed_statuses`，再把父 issue 临时更新为其中一个非关闭状态（例如“新建”“开发中”“测试中”等实际允许的状态），完成子任务创建、完结和工时迁移后，再把父 issue 更新回 `allowed_statuses` 中实际允许的关闭状态；如果原关闭状态不在允许流转里，选择语义最接近的关闭状态并在结果中说明，不要硬猜状态 ID，也不要强行绕过 Redmine 的父子状态约束
 
 ## Attachments
 
@@ -89,6 +94,8 @@ English: Use this skill to operate Redmine through the Redmine MCP.
 - issue 查询如果需要同时看未完成和已完成，优先使用 `status_id=*`
 - 工时登记优先挂在 `issue_id` 上，这样实际工时和刚创建的任务能直接关联
 - 父任务如果承担结构拆分角色，只保留标题、描述、状态、指派关系和 `parent_issue_id` / 子任务关系；不要给父任务写 `estimated_hours` 或 `time_entry`
+- 叶子任务的单项工时默认控制在 `1` 到 `4` 小时；看到单个叶子任务超过 `4` 小时，优先继续拆分，不要为了省事合并
+- 多天补登时，允许父任务覆盖多天，但叶子任务和 time entry 应按天、按主题拆细；没有 git 记录、请假、法定节假日、双休日等日期不要强行补登
 - 同名项目、同名 tracker、多个“已完成”状态并存时，先读取候选项再做选择；只有在仍然有歧义时才简洁追问用户
 - 自定义字段不要硬猜 ID；优先按名称匹配，再落到 `{id, value}` 结构
 
